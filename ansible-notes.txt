@@ -32,3 +32,20 @@ $ ansible-inventory -i inventory --list
 * ansible_become_method sudo su "G-Search"
 # https://docs.ansible.com/ansible/latest/user_guide/become.html
 
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers --limit centos2 -m ping
+centos2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m ping
+centos2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+

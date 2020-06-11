@@ -1,3 +1,5 @@
+# host variables for centos2
+---
 ansible_host: 192.168.0.46
 ansible_user: packt
 ansible_password: password
