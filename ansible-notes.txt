@@ -1,0 +1,31 @@
+## Pluralsight - Ansible Fundamentals
+
+## Ansible - Inventory
+
+$ ansible-inventory -i inventory --list
+{
+    "_meta": {
+        "hostvars": {
+            "centos2": {}, 
+            "centos3": {}
+        }
+    }, 
+    "all": {
+        "children": [
+            "databases", 
+            "ungrouped", 
+            "webservers"
+        ]
+    }, 
+    "databases": {
+        "hosts": [
+            "centos3"
+        ]
+    }, 
+    "webservers": {
+        "hosts": [
+            "centos2"
+        ]
+    }
+}
+
