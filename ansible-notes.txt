@@ -49,3 +49,9 @@ centos2 | SUCCESS => {
     "ping": "pong"
 }
 
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-config dump --only-changed
+DEFAULT_HOST_LIST(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = [u'/home/robq/repos/ps-ansible-fundamentals/my-project/hosts.yml']
+DEFAULT_REMOTE_USER(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = packt
+DEPRECATION_WARNINGS(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = False
+HOST_KEY_CHECKING(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = False
+
