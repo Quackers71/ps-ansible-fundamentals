@@ -2,7 +2,8 @@
 
 ## Ansible - Inventory
 
-$ ansible-inventory -i inventory --list
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-inventory -i inventory --list
 {
     "_meta": {
         "hostvars": {
@@ -29,8 +30,10 @@ $ ansible-inventory -i inventory --list
     }
 }
 
+
 * ansible_become_method sudo su "G-Search"
 # https://docs.ansible.com/ansible/latest/user_guide/become.html
+
 
 robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers --limit centos2 -m ping
 centos2 | SUCCESS => {
@@ -40,6 +43,7 @@ centos2 | SUCCESS => {
     "changed": false, 
     "ping": "pong"
 }
+
 robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m ping
 centos2 | SUCCESS => {
     "ansible_facts": {
@@ -49,9 +53,407 @@ centos2 | SUCCESS => {
     "ping": "pong"
 }
 
+
 robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-config dump --only-changed
+
 DEFAULT_HOST_LIST(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = [u'/home/robq/repos/ps-ansible-fundamentals/my-project/hosts.yml']
 DEFAULT_REMOTE_USER(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = packt
 DEPRECATION_WARNINGS(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = False
 HOST_KEY_CHECKING(/home/robq/repos/ps-ansible-fundamentals/my-project/ansible.cfg) = False
+
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-doc -l | grep ping
+fortios_firewall_shaping_policy                        Configure shaping policies in Fortinet's FortiOS and FortiGate                                                                       
+fortios_firewall_shaping_profile                       Configure shaping profiles in Fortinet's FortiOS and FortiGate                                                                       
+ibm_sa_vol_map                                         Handles volume mapping on IBM Spectrum Accelerate Family storage systems                                                             
+ios_ping                                               Tests reachability using ping from Cisco IOS network devices                                                                         
+junos_ping                                             Tests reachability using ping from devices running Juniper JUNOS                                                                     
+lambda_event                                           Creates, updates or deletes AWS Lambda function event mappings                                                                       
+net_ping                                               Tests reachability using ping from a network device                                                                                  
+netapp_e_lun_mapping                                   NetApp E-Series create, delete, or modify lun mappings                                                                               
+nxos_igmp_snooping                                     Manages IGMP snooping global configuration                                                                                           
+nxos_ping                                              Tests reachability using ping from Nexus switch                                                                                      
+ping                                                   Try to connect to host, verify a usable python and return `pong' on success                                                          
+pingdom                                                Pause/unpause Pingdom alerts                                                                                                         
+pn_igmp_snooping                                       CLI command to modify igmp-snooping                                                                                                  
+postgresql_ping                                        Check remote PostgreSQL server availability                                                                                          
+sefcontext                                             Manages SELinux file context mapping definitions                                                                                     
+selogin                                                Manages linux user to SELinux user mapping                                                                                           
+vyos_ping                                              Tests reachability using ping from VyOS network devices                                                                              
+win_ping                                               A windows version of the classic ping module
+
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-doc ping
+> PING    (/usr/lib/python2.7/dist-packages/ansible/modules/system/ping.py)
+
+        A trivial test module, this module always returns `pong' on successful contact. It does not make sense in playbooks, but it is useful from
+        `/usr/bin/ansible' to verify the ability to login and that a usable Python is configured. This is NOT ICMP ping, this is just a trivial test
+        module that requires Python on the remote-node. For Windows targets, use the [win_ping] module instead. For Network targets, use the [net_ping]
+        module instead.
+> PING    (/usr/lib/python2.7/dist-packages/ansible/modules/system/ping.py)
+
+        A trivial test module, this module always returns `pong' on successful contact. It does not make sense in playbooks, but it is useful from
+        `/usr/bin/ansible' to verify the ability to login and that a usable Python is configured. This is NOT ICMP ping, this is just a trivial test
+        module that requires Python on the remote-node. For Windows targets, use the [win_ping] module instead. For Network targets, use the [net_ping]
+        module instead.
+
+  * This module is maintained by The Ansible Core Team
+OPTIONS (= is mandatory):
+
+- data
+        Data to return for the `ping' return value.
+        If this parameter is set to `crash', the module will cause an exception.
+        [Default: pong]
+        type: str
+
+
+SEE ALSO:
+      * Module net_ping
+           The official documentation on the net_ping module.
+           https://docs.ansible.com/ansible/latest/modules/net_ping_module.html
+      * Module win_ping
+           The official documentation on the win_ping module.
+           https://docs.ansible.com/ansible/latest/modules/win_ping_module.html
+
+
+AUTHOR: Ansible Core Team, Michael DeHaan
+        METADATA:
+          status:
+          - stableinterface
+          supported_by: core
+        
+
+EXAMPLES:
+
+# Test we can logon to 'webservers' and execute python with json lib.
+# ansible webservers -m ping
+
+# Example from an Ansible Playbook
+- ping:
+
+# Induce an exception to see what happens
+- ping:
+    data: crash
+
+
+RETURN VALUES:
+
+
+ansible-doc service
+e.g.
+
+
+# using Ad-hoc commands in ansible
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible centos3 -m setup | grep ansible_user
+        "ansible_user_dir": "/home/packt", 
+        "ansible_user_gecos": "packt", 
+        "ansible_user_gid": 1000, 
+        "ansible_user_id": "packt", 
+        "ansible_user_shell": "/bin/bash", 
+        "ansible_user_uid": 1000, 
+        "ansible_userspace_architecture": "x86_64", 
+        "ansible_userspace_bits": "64",
+
+
+## Specifically for this I had to add the packt user to visudo && become=true in ansible.cfg under [pri escal]
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible databases -m user -a "name=test password=password state=present"
+[WARNING]: The input ******** appears not to have been hashed. The '********' argument must be encrypted for this module to work properly.
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "comment": "", 
+    "create_home": true, 
+    "group": 1001, 
+    "home": "/home/test", 
+    "name": "test", 
+    "password": "NOT_LOGGING_PASSWORD", 
+    "shell": "/bin/bash", 
+    "state": "present", 
+    "system": false, 
+    "uid": 1001
+}
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m user -a "name=test2 state=absent"
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "force": false, 
+    "name": "test2", 
+    "remove": false, 
+    "state": "absent"
+}
+
+
+## Select Ansible Modules
+https://docs.ansible.com/ansible/latest/modules/list_of_all_modules.html
+
+File Modules:
+    - copy:
+    - file:
+    - lineinfile: Ensure a particular line is or is not in a file
+    - synchronize: Synchronize content using rsync
+
+Software package modules:
+    - yum:
+    - dnf:
+    - gem:
+
+System Modules:
+    - firewalld: Manage arbitrary ports and services using firewalld
+    - reboot:
+    - service:
+    - user: add, remove and manage
+
+Net Tools modules
+    - get_url: 
+    - nmcli: Manage networking
+    - uri: interact with web services and communicate with APIs
+
+
+$ ansible-doc {module}
+$ ansible-doc -l {module}
+i.e.
+$ ansible-doc -l user | grep user
+$ ansible-doc user
+e.g.
+$ ansible webservers -m user -a "name=newbie uid=4000 state=present"
+$ ansible webservers -m user -a "name=newbie groups=devs,wheel append=yes state=present"
+
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible centos3 -m service -a "state=restarted name=sshd"
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "name": "sshd", 
+    "state": "started", 
+    "status": {
+        "ActiveEnterTimestamp": "Thu 2020-06-11 12:58:51 BST", 
+        "ActiveEnterTimestampMonotonic": "57123991461", 
+        "ActiveExitTimestamp": "Thu 2020-06-11 12:58:51 BST", 
+        "ActiveExitTimestampMonotonic": "57123948873", 
+        "ActiveState": "active", 
+        "After": "basic.target system.slice systemd-journald.socket sshd-keygen.service network.target",
+
+[packt@centos3 ~]$ systemctl status sshd.service
+● sshd.service - OpenSSH server daemon
+   Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2020-06-11 12:59:16 BST; 1s ago
+     Docs: man:sshd(8)
+           man:sshd_config(5)
+ Main PID: 17154 (sshd)
+    Tasks: 1
+   Memory: 1.0M
+   CGroup: /system.slice/sshd.service
+           └─17154 /usr/sbin/sshd -D
+
+Jun 11 12:59:16 centos3 systemd[1]: Stopping OpenSSH server daemon...
+Jun 11 12:59:16 centos3 systemd[1]: Stopped OpenSSH server daemon.
+Jun 11 12:59:16 centos3 systemd[1]: Starting OpenSSH server daemon...
+Jun 11 12:59:16 centos3 sshd[17154]: Server listening on 0.0.0.0 port 22.
+Jun 11 12:59:16 centos3 sshd[17154]: Server listening on :: port 22.
+Jun 11 12:59:16 centos3 systemd[1]: Started OpenSSH server daemon.
+
+
+Command Modules
+    - command:
+    - shell:
+    - raw:
+
+e.g.
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m commmand -a "/usr/bin/hostname"
+ERROR! this task 'commmand' has extra params, which is only allowed in the following modules: shell, win_shell, include_vars, add_host, raw, include_role, meta, set_fact, include, import_tasks, script, import_role, include_tasks, group_by, command, win_command
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m shell -a "/usr/bin/hostname"
+centos3 | CHANGED | rc=0 >>
+centos3
+
+
+# Added a group to webservers (Amber output)
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m group -a "name=demo"
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "gid": 1002, 
+    "name": "demo", 
+    "state": "present", 
+    "system": false
+}`
+# Re-ran (Green output)
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m group -a "name=demo"
+centos3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "gid": 1002, 
+    "name": "demo", 
+    "state": "present", 
+    "system": false
+}
+
+# Added test user to demo group (Amber output)
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m user -a "name=test group=demo"
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "append": false, 
+    "changed": true, 
+    "comment": "", 
+    "group": 1002, 
+    "home": "/home/test", 
+    "move_home": false, 
+    "name": "test", 
+    "shell": "/bin/bash", 
+    "state": "present", 
+    "uid": 1001
+}
+
+# Re-ran (Green output)
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m user -a "name=test group=demo"
+centos3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "append": false, 
+    "changed": false, 
+    "comment": "", 
+    "group": 1002, 
+    "home": "/home/test", 
+    "move_home": false, 
+    "name": "test", 
+    "shell": "/bin/bash", 
+    "state": "present", 
+    "uid": 1001
+}
+
+
+# Installed httpd/Apache to webservers (Amber output)
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m package -a "name=httpd state=present"
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "changes": {
+        "installed": [
+            "httpd"
+        ]
+    }, 
+    "msg": "", 
+    "rc": 0, 
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: mirror.cwcs.co.uk\n * 
+        epel: mirror.de.leaseweb.net\n * extras: mirrors.clouvider.net\n * updates: mirrors.clouvider.net\nResolving 
+        Dependencies\n--> Running transaction check\n---> Package httpd.x86_64 0:2.4.6-93.el7.centos will be 
+        installed\n--> Processing Dependency: httpd-tools = 2.4.6-93.el7.centos for package: 
+        httpd-2.4.6-93.el7.centos.x86_64\n--> Processing Dependency: /etc/mime.types for package: 
+        httpd-2.4.6-93.el7.centos.x86_64\n--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: 
+        httpd-2.4.6-93.el7.centos.x86_64\n--> Processing Dependency: libapr-1.so.0()(64bit) for package: 
+        httpd-2.4.6-93.el7.centos.x86_64\n--> Running transaction check\n---> Package apr.x86_64 0:1.4.8-5.el7 
+        will be installed\n---> Package apr-util.x86_64 0:1.5.2-6.el7 will be installed\n---> Package 
+        httpd-tools.x86_64 0:2.4.6-93.el7.centos will be installed\n---> Package mailcap.noarch 0:2.1.41-2.el7 
+        will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n
+        ================================================================================\n Package            
+        Arch          Version                     Repository   Size\n
+        ================================================================================\nInstalling:\n httpd
+        x86_64        2.4.6-93.el7.centos         base        2.7 M\nInstalling for dependencies:
+        \n apr                x86_64        1.4.8-5.el7                 base        103 k\n 
+        apr-util           x86_64        1.5.2-6.el7                 base         92 k\n httpd-tools
+        x86_64        2.4.6-93.el7.centos         base         92 k\n mailcap            noarch
+        2.1.41-2.el7                base         31 k\n\nTransaction Summary\n
+        ================================================================================\nInstall
+        1 Package (+4 Dependent packages)\n\nTotal download size: 3.0 M\nInstalled size: 10 M
+        \nDownloading packages:\n
+        --------------------------------------------------------------------------------\nTotal
+        565 kB/s | 3.0 MB  00:05     \nRunning transaction check\nRunning transaction test\nTransaction test 
+        succeeded\nRunning transaction\n  Installing : apr-1.4.8-5.el7.x86_64
+        1/5 \n  Installing : apr-util-1.5.2-6.el7.x86_64
+        2/5 \n  Installing : httpd-tools-2.4.6-93.el7.centos.x86_64                       3/5 \n  Installing :
+        mailcap-2.1.41-2.el7.noarch                                  
+        4/5 \n  Installing : httpd-2.4.6-93.el7.centos.x86_64                             5/5 \n  Verifying  : 
+        apr-1.4.8-5.el7.x86_64                                       
+        1/5 \n  Verifying  : httpd-tools-2.4.6-93.el7.centos.x86_64                       2/5 \n  Verifying  : 
+        mailcap-2.1.41-2.el7.noarch                                  
+        3/5 \n  Verifying  : httpd-2.4.6-93.el7.centos.x86_64                             4/5 \n  Verifying  : 
+        apr-util-1.5.2-6.el7.x86_64                                  
+        5/5 \n\nInstalled:\n  httpd.x86_64 0:2.4.6-93.el7.centos                                            
+        \n\nDependency Installed:\n  apr.x86_64 0:1.4.8-5.el7                     apr-util.x86_64 0:1.5.2-6.el7    
+        \n  httpd-tools.x86_64 0:2.4.6-93.el7.centos     mailcap.noarch 0:2.1.41-2.el7    \n\nComplete!\n"
+
+    ]
+}
+
+# Yum history output from centos3
+[packt@centos3 ~]$ sudo yum history info 26
+Loaded plugins: fastestmirror
+Transaction ID : 26
+Begin time     : Thu Jun 11 13:13:26 2020
+Begin rpmdb    : 384:a8e0a814e9c38a098ff1dac68efe132eb6cee21e
+End time       :            13:13:28 2020 (2 seconds)
+End rpmdb      : 389:cd0ebf23dbad4e5bc53dd0a277d1c3d629b48478
+User           : packt <packt>
+Return-Code    : Success
+Command Line   : -d 2 -y install httpd
+Transaction performed with:
+    Installed     rpm-4.11.3-43.el7.x86_64                      @base
+    Installed     yum-3.4.3-167.el7.centos.noarch               @base
+    Installed     yum-plugin-fastestmirror-1.1.31-53.el7.noarch @base
+Packages Altered:
+    Dep-Install apr-1.4.8-5.el7.x86_64                 @base
+    Dep-Install apr-util-1.5.2-6.el7.x86_64            @base
+    Install     httpd-2.4.6-93.el7.centos.x86_64       @base
+    Dep-Install httpd-tools-2.4.6-93.el7.centos.x86_64 @base
+    Dep-Install mailcap-2.1.41-2.el7.noarch            @base
+history info
+
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible webservers -m service -a "name=httpd state=restarted"
+centos3 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": true, 
+    "name": "httpd", 
+    "state": "started", 
+    "status": {
+        "ActiveEnterTimestampMonotonic": "0", 
+        "ActiveExitTimestampMonotonic": "0", 
+        "ActiveState": "inactive", 
+
+[packt@centos3 ~]$ systemctl status httpd
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since Thu 2020-06-11 13:24:51 BST; 7s ago
+     Docs: man:httpd(8)
+           man:apachectl(8)
+ Main PID: 18284 (httpd)
+   Status: "Processing requests..."
+    Tasks: 6
+   Memory: 2.7M
+   CGroup: /system.slice/httpd.service
+           ├─18284 /usr/sbin/httpd -DFOREGROUND
+           ├─18285 /usr/sbin/httpd -DFOREGROUND
+           ├─18286 /usr/sbin/httpd -DFOREGROUND
+           ├─18287 /usr/sbin/httpd -DFOREGROUND
+           ├─18288 /usr/sbin/httpd -DFOREGROUND
+           └─18289 /usr/sbin/httpd -DFOREGROUND
+
+Jun 11 13:24:51 centos3 systemd[1]: Starting The Apache HTTP Server...
+Jun 11 13:24:51 centos3 httpd[18284]: AH00558: httpd: Could not reliably determine the se...age
+Jun 11 13:24:51 centos3 systemd[1]: Started The Apache HTTP Server.
+Hint: Some lines were ellipsized, use -l to show in full.
+
+# You can also use the yum module for RHEL/Centos VMs
+
 

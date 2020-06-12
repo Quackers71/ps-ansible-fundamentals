@@ -1,0 +1,5 @@
+# host variables for centos3
+---
+ansible_host: 192.168.0.47
+ansible_user: packt
+ansible_password: password
