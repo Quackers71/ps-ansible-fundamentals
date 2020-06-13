@@ -507,3 +507,11 @@ PLAY RECAP *********************************************************************
 centos3                    : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 
 
+## Using Variables in Plays
+https://docs.ansible.com/ansible/latest//user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
+
+# Output from playbook deployment:
+[packt@centos3 ~]$ cat /etc/passwd | grep test*
+test:x:1001:1002:Test User Account:/home/test:/bin/bash ***
+test2:x:1002:1003::/home/test2:/bin/bash
+

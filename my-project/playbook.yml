@@ -15,10 +15,12 @@
     - all
   
 - name: Create New User
-  hosts: webservers
+  hosts: webservers databases
   become: true
+
   tasks:
     - name: User created
       user:
-        name: test2
+        name: "{{ username['test']['uname'] }}"
+        comment: "{{ username['test']['description'] }}"
         state: present
