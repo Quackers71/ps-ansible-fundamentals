@@ -457,3 +457,53 @@ Hint: Some lines were ellipsized, use -l to show in full.
 # You can also use the yum module for RHEL/Centos VMs
 
 
+Section 4: Writing Ansible Playbooks
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook playbook.yml
+
+PLAY [Gathers facts for webservers] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+
+TASK [setup] ************************************************************************************************************************************************************************************
+ok: [centos3]
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+centos3                    : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+# Using --syntax-check
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook --syntax-check playbook.yml
+ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: No JSON object could be decoded
+
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context
+
+The error appears to be in '/home/robq/repos/ps-ansible-fundamentals/my-project/playbook.yml': line 9, column 12, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+- name: Gathers facts for webservers
+      hosts: webservers
+           ^ here
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook --syntax-check playbook.yml
+
+playbook: playbook.yml
+
+# ansible-playbook Dry Run use the -C flag
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook -C playbook.yml
+
+PLAY [Gathers facts for webservers] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+
+TASK [setup] ************************************************************************************************************************************************************************************
+ok: [centos3]
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+centos3                    : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+
+

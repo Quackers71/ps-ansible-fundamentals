@@ -5,23 +5,20 @@
 # of plays, with each play being a dictionary
  
   # Target: where our play will run and options it will run with
-- name: Gathers facts on Centos3
-  hosts: centos3
+- name: Gathers facts for webservers
+  hosts: webservers
   tasks:
   - setup:
       gather_subset: 
         - "all"
-#   tags:
-#     - docker_ansible
+  tags:
+    - all
   
-# - name: Runs Docker Installation
-#   hosts: centos3
-#   become: yes
-#   roles:
-#     - role: docker_ansible
-#   tags: 
-#     - docker_ansible
-  
- 
-# Three dots indicate the end of a YAML document
-...
+- name: Create New User
+  hosts: webservers
+  become: true
+  tasks:
+    - name: User created
+      user:
+        name: test2
+        state: present
