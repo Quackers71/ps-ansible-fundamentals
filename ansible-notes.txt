@@ -515,3 +515,63 @@ https://docs.ansible.com/ansible/latest//user_guide/playbooks_variables.html#var
 test:x:1001:1002:Test User Account:/home/test:/bin/bash ***
 test2:x:1002:1003::/home/test2:/bin/bash
 
+
+## Using ansible-vault
+
+$ ansible-vault encrypt secret
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook --ask-vault-pass playbook.yml 
+Vault password: 
+
+PLAY [Gathers facts for webservers] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+
+TASK [setup] ************************************************************************************************************************************************************************************
+ok: [centos3]
+
+PLAY [Create New User] **************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+ok: [centos2]
+
+TASK [Load variable from encrypted file] ********************************************************************************************************************************************************
+ok: [centos3]
+ok: [centos2]
+
+TASK [Display contents of encrypted file] *******************************************************************************************************************************************************
+ok: [centos2] => {
+    "msg": "out_secret_data"
+}
+ok: [centos3] => {
+    "msg": "out_secret_data"
+}
+
+TASK [User created] *****************************************************************************************************************************************************************************
+ok: [centos2]
+ok: [centos3]
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+centos2                    : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+centos3                    : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-vault edit secret 
+Vault password: 
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-vault view secret 
+Vault password: 
+secret: our_secret_data
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-vault decrypt secret 
+Vault password: 
+Decryption successful
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-vault encrypt secret 
+New Vault password: 
+Confirm New Vault password: 
+Encryption successful
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-vault rekey secret 
+Vault password: 
+New Vault password: 
+Confirm New Vault password: 
+Rekey successful
+

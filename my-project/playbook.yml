@@ -5,8 +5,8 @@
 # of plays, with each play being a dictionary
  
   # Target: where our play will run and options it will run with
-- name: Gathers facts for webservers
-  hosts: webservers
+- name: Gathers facts for webservers & databases
+  hosts: webservers databases
   tasks:
   - setup:
       gather_subset: 
@@ -19,8 +19,18 @@
   become: true
 
   tasks:
+    - name: Load variable from encrypted file
+      include_vars:
+        file: secret
+
+    - name: Display contents of encrypted file
+      debug:
+        msg: "{{ secret }}"
+      no_log: true
+
     - name: User created
       user:
         name: "{{ username['test']['uname'] }}"
         comment: "{{ username['test']['description'] }}"
+        password: "{{ username['test']['password'] }}"
         state: present
