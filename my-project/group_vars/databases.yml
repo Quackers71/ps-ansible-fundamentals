@@ -1,7 +1,12 @@
 # variables for the webservers group
-    
-    username: 
-      test:
-        uname: test
-        description: Test User Account
-        # password: "{{ secret }}"
+
+    db_users:
+      - test
+      - dev
+      - qa
+
+    # username: 
+    #   test:
+    #     uname: test
+    #     description: Test User Account
+    #     # password: "{{ secret }}"

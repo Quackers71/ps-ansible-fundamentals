@@ -14,45 +14,14 @@
   tags:
     - all
   
-# - name: Create New User
-#   hosts: webservers databases
-#   become: true
-
-- name: Create multiple Users
-  hosts: webservers databases
-  become: true
-  vars:
-    myusers:
-      - rita
-      - sue
-      - bob
+- name: 
 
 # - name: Create Users in Groups
 #   hosts: webservers databases
 #   become: true
   
   tasks:
-  #   - name: Load variable from encrypted file
-  #     include_vars:
-  #       file: secret
 
-  #   - name: Display contents of encrypted file
-  #     debug:
-  #       msg: "{{ secret }}"
-  #     no_log: true
-
-    # - name: User created
-    #   user:
-    #     name: "{{ username['test']['uname'] }}"
-    #     comment: "{{ username['test']['description'] }}"
-    #     # password: "{{ username['test']['password'] }}"
-    #     state: present
-    
-    - name: Looping through creating the Users
-      user:
-        name: "{{ item }}"
-        state: present
-      loop: "{{ myusers }}"
 
     # - name: Create Groups
     #   group:
