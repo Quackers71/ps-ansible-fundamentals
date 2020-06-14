@@ -14,23 +14,60 @@
   tags:
     - all
   
-- name: Create New User
+# - name: Create New User
+#   hosts: webservers databases
+#   become: true
+
+- name: Create multiple Users
   hosts: webservers databases
   become: true
+  vars:
+    myusers:
+      - rita
+      - sue
+      - bob
 
+# - name: Create Users in Groups
+#   hosts: webservers databases
+#   become: true
+  
   tasks:
-    - name: Load variable from encrypted file
-      include_vars:
-        file: secret
+  #   - name: Load variable from encrypted file
+  #     include_vars:
+  #       file: secret
 
-    - name: Display contents of encrypted file
-      debug:
-        msg: "{{ secret }}"
-      no_log: true
+  #   - name: Display contents of encrypted file
+  #     debug:
+  #       msg: "{{ secret }}"
+  #     no_log: true
 
-    - name: User created
+    # - name: User created
+    #   user:
+    #     name: "{{ username['test']['uname'] }}"
+    #     comment: "{{ username['test']['description'] }}"
+    #     # password: "{{ username['test']['password'] }}"
+    #     state: present
+    
+    - name: Looping through creating the Users
       user:
-        name: "{{ username['test']['uname'] }}"
-        comment: "{{ username['test']['description'] }}"
-        password: "{{ username['test']['password'] }}"
+        name: "{{ item }}"
         state: present
+      loop: "{{ myusers }}"
+
+    # - name: Create Groups
+    #   group:
+    #     name: "{{ item }}"
+    #     state: present
+    #   loop:
+    #     - flintstones
+    #     - rubbles
+
+    # - name: Create User in their appropiate Groups
+    #   user:
+    #     name: "{{ item.name }}"
+    #     groups: "{{ item.groups }}"
+    #   with_dict:
+    #     - { name: 'fred', groups: 'flintstones' }
+    #     - { name: 'wilma', groups: 'flintstones' }
+    #     - { name: 'barney', groups: 'rubbles' }
+    #     - { name: 'dave', groups: 'rubbles' }
