@@ -1,12 +1,6 @@
 ---
-# YAML documents begin with the document separator ---
- 
-# The minus in YAML this indicates a list item.  The playbook contains a list
-# of plays, with each play being a dictionary
- 
-  # Target: where our play will run and options it will run with
-- name: Gathers facts for webservers & databases
-  hosts: webservers databases
+- name: Gathers facts for webservers
+  hosts: webservers
   tasks:
   - setup:
       gather_subset: 
@@ -14,29 +8,26 @@
   tags:
     - all
   
-- name: 
-
-# - name: Create Users in Groups
-#   hosts: webservers databases
-#   become: true
-  
+- name: Create Users in their appropiate Groups
+  hosts: webservers
+  become: true
   tasks:
 
+    - name: Create Groups
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - flintstones
+        - rubbles
 
-    # - name: Create Groups
-    #   group:
-    #     name: "{{ item }}"
-    #     state: present
-    #   loop:
-    #     - flintstones
-    #     - rubbles
-
-    # - name: Create User in their appropiate Groups
-    #   user:
-    #     name: "{{ item.name }}"
-    #     groups: "{{ item.groups }}"
-    #   with_dict:
-    #     - { name: 'fred', groups: 'flintstones' }
-    #     - { name: 'wilma', groups: 'flintstones' }
-    #     - { name: 'barney', groups: 'rubbles' }
-    #     - { name: 'dave', groups: 'rubbles' }
+    - name: Create Users in their appropiate Groups
+      user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups }}"
+        state: present
+      with_dict:
+        - { name: 'fred', groups: 'flintstones' }
+        - { name: 'wilma', groups: 'flintstones' }
+        - { name: 'barney', groups: 'rubbles' }
+        - { name: 'dave', groups: 'rubbles' }

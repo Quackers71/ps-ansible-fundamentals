@@ -1,6 +1,6 @@
 ---
 - name: New Users are Created
-  hosts: databases
+  hosts: webservers
   become: true
 
   tasks:
@@ -8,4 +8,4 @@
       user:
         name: "{{ item }}"
         state: present
-      loop: "{{ db_users }}"
+      loop: "{{ web_users }}"
