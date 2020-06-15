@@ -653,3 +653,55 @@ centos3                    : ok=2    changed=1    unreachable=0    failed=0    s
 mint                       : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
 
 
+## Triggering Tasks with Handlers
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook playbook.yml 
+
+PLAY [Gathers facts for webservers] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+
+TASK [setup] ************************************************************************************************************************************************************************************
+ok: [centos3]
+
+PLAY [New Users are created] ********************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+[WARNING]: Platform linux on host mint is using the discovered Python interpreter at /usr/bin/python, but future installation of another Python interpreter could change this. See
+https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
+ok: [mint]
+ok: [centos2]
+
+TASK [Create webserver Users] *******************************************************************************************************************************************************************
+skipping: [mint] => (item=member) 
+skipping: [centos2] => (item=member) 
+skipping: [centos2] => (item=admin) 
+skipping: [mint] => (item=admin) 
+skipping: [mint] => (item=developer) 
+skipping: [centos2] => (item=developer) 
+ok: [centos3] => (item=member)
+ok: [centos3] => (item=admin)
+changed: [centos3] => (item=developer)
+
+TASK [Create database Users] ********************************************************************************************************************************************************************
+skipping: [mint] => (item=member) 
+skipping: [mint] => (item=admin) 
+skipping: [mint] => (item=developer) 
+skipping: [centos3] => (item=member) 
+skipping: [centos3] => (item=admin) 
+skipping: [centos3] => (item=developer) 
+changed: [centos2] => (item=member)
+changed: [centos2] => (item=admin)
+changed: [centos2] => (item=developer)
+
+RUNNING HANDLER [Reboot System] *****************************************************************************************************************************************************************
+changed: [centos3]
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+centos2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+centos3                    : ok=5    changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+mint                       : ok=1    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+
