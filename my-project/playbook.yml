@@ -7,27 +7,6 @@
         - "all"
   tags:
     - all
-  
-- name: Create Users in their appropiate Groups
-  hosts: webservers
-  become: true
-  tasks:
 
-    - name: Create Groups
-      group:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - flintstones
-        - rubbles
-
-    - name: Create Users in their appropiate Groups
-      user:
-        name: "{{ item.name }}"
-        groups: "{{ item.groups }}"
-        state: present
-      with_dict:
-        - { name: 'fred', groups: 'flintstones' }
-        - { name: 'wilma', groups: 'flintstones' }
-        - { name: 'barney', groups: 'rubbles' }
-        - { name: 'dave', groups: 'rubbles' }
+- name: Run conditional Task
+  include: conditional.yml

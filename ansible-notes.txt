@@ -623,3 +623,33 @@ sue:x:1007:1007::/home/sue:/bin/bash
 bob:x:1008:1008::/home/bob:/bin/bash
 
 
+## Running Conditional Tasks
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook conditional.yml 
+
+PLAY [New Users are created] ********************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+[WARNING]: Platform linux on host mint is using the discovered Python interpreter at /usr/bin/python, but future installation of another Python interpreter could change this. See
+https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
+ok: [mint]
+ok: [centos3]
+ok: [centos2]
+
+TASK [Create webserver Users] *******************************************************************************************************************************************************************
+skipping: [mint] => (item=member) 
+skipping: [mint] => (item=admin) 
+skipping: [mint] => (item=developer) 
+skipping: [centos2] => (item=member) 
+skipping: [centos2] => (item=admin) 
+skipping: [centos2] => (item=developer) 
+changed: [centos3] => (item=member)
+changed: [centos3] => (item=admin)
+changed: [centos3] => (item=developer)
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+centos2                    : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+centos3                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+mint                       : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+
