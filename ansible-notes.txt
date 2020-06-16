@@ -708,4 +708,71 @@ mint                       : ok=1    changed=0    unreachable=0    failed=0    s
 ## Processing Variables with Jinja2 Filters
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html
 
+## Templating External Data with Lookup Plugins
+
+A lookup plugin is an Ansible extension to the Jinja2 templating language
+$ ansible-doc -t lookup -l
+$ ansible-doc -t lookup file # will display documentation for the 'file' lookup plugin
+
+# Example: File lookups
+
+# Lookup and Query
+# 1st Example - The 'dig' lookup plugin used here to look up the DNS MX records for gmail.com and
+                returns a list where each item is one record
+
+- name: Example of a lookup plugin in use
+  hosts: all
+  vars:
+    mxvar: "{{ query('dig', 'gmail', 'qtype=MX') }}"
+  tasks:
+    - name: List each MX record for gmail.com
+      debug:
+        msg: An MX record is: {{ item }}
+      loop: "{{ mxvar }}"
+
+# 2nd Example - The 'file' lookup plugin can be used to load the contents of a file into a variable
+                The 'authorized_key' module wil copy the contents of files/naoko.key.pub into the
+                ~naoko/.ssh/authorized_keys file for user naoko on each managed host.
+
+- name: Add authorized keys
+  hosts: all
+  vars:
+    users:
+      - naoko
+  tasks:
+    - name: Add authorized keys
+      authorized_key:
+        user: "{{ item }}"
+        key: "{{ lookup('file', item + '.key.pub') }}"
+      loop: "{{ users }}"
+
+# 3rd Example - The 'lines' lookup plugin will read output from a command, making each line an item in the list
+                This example task uses 'lines' to build a list consisting of the lines in the /etc/passwd file.
+                It then loops over that list, using the debug module and the 'regex_replace' filter to print
+                out the name of each user account listed in that file.
+
+- name: Print the name of each account in /etc/passwd
+  debug:
+    msg: A user is {{ item | regex_replace(':.$') }}
+  loop: "{{ query('lines', 'cat /etc/passwd') }}"
+
+# 4th Example - The 'url' lookup plugin is useful to grab the content of a web page or the output of an API.
+
+- name: test url lookups
+  hosts: localhost
+  become: no
+  vars:
+    amazon_ip_ranges: "{{ lookup('url', 'https://ip-ranges.amazonaws.com/ip-ranges.json', split_lines=False) }}"
+
+  tasks:
+    - name: display IPv4 ranges
+      debug:
+        msg: "{{ item['ip_prefix'] }}"
+      loop: "{{ amazon_ip_ranges['prefixes'] }}"
+
+    - name: display IPv6 ranges
+      debug:
+        msg: "{{ item['ipv6_prefix'] }}"
+      loop: "{{ amazon_ip_ranges['ipv6_prefixes'] }}"
+
 
