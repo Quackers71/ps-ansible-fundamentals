@@ -705,3 +705,7 @@ centos3                    : ok=5    changed=2    unreachable=0    failed=0    s
 mint                       : ok=1    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
 
 
+## Processing Variables with Jinja2 Filters
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html
+
+
