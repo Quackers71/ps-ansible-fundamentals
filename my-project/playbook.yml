@@ -8,8 +8,5 @@
   tags:
     - all
 
-- name: Run conditional Task
-  include: conditional.yml
-
-- name: Handling Errors with Block (Block, Rescue & Always)
-  include: block_rescue_always.yml
+- name: Running Jinja2 templating
+  include: template.yml
