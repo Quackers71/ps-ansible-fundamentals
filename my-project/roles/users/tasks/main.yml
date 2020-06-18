@@ -1,0 +1,19 @@
+---
+# tasks file for users
+
+  tasks:
+    - name: Create database users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ db_users }}"
+      when: "'databases' in group_names"
+      notify: Reboot system
+
+    - name: Create webserver users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ web_users }}"
+      when: "'webservers' in group_names"
+      notify: Reboot system

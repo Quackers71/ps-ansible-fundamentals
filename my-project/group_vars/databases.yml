@@ -1,7 +1,7 @@
 # variables for the webservers group
 
-    # username: 
-    #   test:
-    #     uname: test
-    #     description: Test User Account
-    #     # password: "{{ secret }}"
+  username: 
+    test:
+      uname: test
+      description: Test User Account
+      #password: "{{ secret }}"

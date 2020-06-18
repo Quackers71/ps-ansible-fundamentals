@@ -8,5 +8,5 @@
   tags:
     - all
 
-- name: Running Jinja2 templating
-  include: template.yml
+- name: Running the Users Role
+  include: users.yml

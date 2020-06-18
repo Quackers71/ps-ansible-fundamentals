@@ -1,0 +1,7 @@
+---
+- name: New users are created
+  hosts: webservers
+  become: true
+
+  roles:
+    - users

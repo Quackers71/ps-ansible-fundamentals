@@ -15,7 +15,7 @@
         state: present
       loop: "{{ web_users }}"
       when: "'webservers' in group_names"
-      notify: Reboot System
+      notify: Reboot system
 
     - name: Create database Users
       user:
@@ -26,5 +26,5 @@
 
 
   handlers:
-    - name: Reboot System
+    - name: Reboot system
       reboot:

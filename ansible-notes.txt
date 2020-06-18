@@ -776,3 +776,30 @@ $ ansible-doc -t lookup file # will display documentation for the 'file' lookup 
       loop: "{{ amazon_ip_ranges['ipv6_prefixes'] }}"
 
 
+## Working with Roles for Automation Reuse
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-galaxy init users
+- Role users was created successfully
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ mv users roles/
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ tree roles/
+roles/
+└── users
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+9 directories, 8 files
+
