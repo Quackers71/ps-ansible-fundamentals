@@ -1,2 +1,7 @@
 ---
 # vars file for users
+
+    web_users:
+      - member
+      - admin
+      - developer

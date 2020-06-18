@@ -4,7 +4,7 @@
     test:
       uname: test
       description: Test User Account
-      #password: "{{ secret }}"
+      password: "{{ secret }}"
     dev:
       uname: dev
       description: Developer User Account

@@ -1,7 +1,7 @@
 ---
 # tasks file for users
 
-  tasks:
+  # tasks:
     - name: Create database users
       user:
         name: "{{ item }}"
