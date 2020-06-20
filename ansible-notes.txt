@@ -853,3 +853,40 @@ $ ansible-galaxy install -r roles/requirements.yml -p roles
 
 # https://galaxy.ansible.com/docs/using/installing.html
 
+# Using Ansible Galaxy Roles with requirements.yml
+$ ansible-galaxy install -r requirements.yml
+$ ansible-playbook playbook-galaxy-apache.yml
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-galaxy install -r requirements.yml 
+- downloading role 'centos_apache', owned by mariuszczyz
+- downloading role from https://github.com/mariuszczyz/centos_apache/archive/master.tar.gz
+- extracting mariuszczyz.centos_apache to /home/robq/repos/ps-ansible-fundamentals/my-project/roles/mariuszczyz.centos_apache
+- mariuszczyz.centos_apache (master) was installed successfully
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-playbook playbook-galaxy-apache.yml 
+
+PLAY [Use a galaxy role to install apache] ******************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************************
+ok: [centos3]
+
+TASK [mariuszczyz.centos_apache : Install the latest Apache 2.4 for CentOS] *********************************************************************************************************************
+ok: [centos3]
+
+TASK [mariuszczyz.centos_apache : Install custom Apache configuration file] *********************************************************************************************************************
+ok: [centos3]
+
+TASK [mariuszczyz.centos_apache : Remove default Apache configuration files] ********************************************************************************************************************
+ok: [centos3] => (item=welcome.conf)
+ok: [centos3] => (item=userdir.conf)
+ok: [centos3] => (item=README)
+
+TASK [mariuszczyz.centos_apache : Start and enable Apache] **************************************************************************************************************************************
+changed: [centos3]
+
+PLAY RECAP **************************************************************************************************************************************************************************************
+centos3                    : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-galaxy remove mariuszczyz.centos_apache
+- successfully removed mariuszczyz.centos_apache
+

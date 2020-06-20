@@ -1,0 +1,3 @@
+# requirements.yml
+# Install from Ansible Galaxy
+- src: mariuszczyz.centos_apache
