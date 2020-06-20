@@ -890,3 +890,29 @@ centos3                    : ok=5    changed=1    unreachable=0    failed=0    s
 robq@robq-VirtualBox:~/repos/ps-ansible-fundamentals/my-project$ ansible-galaxy remove mariuszczyz.centos_apache
 - successfully removed mariuszczyz.centos_apache
 
+
+## Managing Complex Inventories
+# Working with Dynamic Inventories
+
+# A dynamic inventory script is an executable program that can build an inventory automically
+i.e.
+$ chmod a+x inventory-script.py
+$ ansible-inventory -i inventory-file --list # will show an example of the format
+# from your inventory file (INI format) and output to (JSON format)
+# https://github.com/ansible/ansible/tree/stable-2.9/contrib/inventory
+# &
+# https://docs.ansible.com/ansible/latest/dev_guide/developing_inventory.html
+
+
+$ python dynamic_inventory.py --list
+{"group": {"hosts": ["192.168.0.46", "192.168.0.47"], "vars": {"example_variable": "value"}},
+ "_meta": {"hostvars": {"192.168.0.47": {"host_specific_var": "centos3"},
+  "192.168.0.46": {"host_specific_var": "centos2"}}}}
+
+# https://docs.ansible.com/ansible/latest/dev_guide/developing_inventory.html
+
+$ ./dynamic_inventory.py --list
+{"group": {"hosts": ["192.168.0.46", "192.168.0.47"], "vars": {"example_variable": "value"}},
+ "_meta": {"hostvars": {"192.168.0.47": {"host_specific_var": "centos3"},
+  "192.168.0.46": {"host_specific_var": "centos2"}}}}
+
