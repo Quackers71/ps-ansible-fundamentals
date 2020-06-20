@@ -916,3 +916,13 @@ $ ./dynamic_inventory.py --list
  "_meta": {"hostvars": {"192.168.0.47": {"host_specific_var": "centos3"},
   "192.168.0.46": {"host_specific_var": "centos2"}}}}
 
+
+## Managing Inventory Variables
+
+# You can set a condition on a task so that it runs only if the current managed host is also in
+# another group by using the special inventory_hostname and groups variables: e.g.
+
+- name: This task runs only if the current host is in group testing
+  debug:
+    msg: "{{ inventory_hostname }} is in group testing"
+  when: inventory_hostname in groups['testing']
